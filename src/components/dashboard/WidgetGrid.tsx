@@ -11,10 +11,9 @@ import {
   DragEndEvent,
 } from '@dnd-kit/core';
 import {
-  arrayMove,
   SortableContext,
-  sortableKeyboardCoordinates,
   useSortable,
+  sortableKeyboardCoordinates,
   horizontalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -57,29 +56,17 @@ const SortableWidget: React.FC<SortableWidgetProps> = ({
     opacity: isDragging ? 0.5 : 1,
   };
 
-  const handlePointerDown = (e: React.PointerEvent) => {
-    const target = e.target as HTMLElement;
-    if (target.closest('[data-no-drag="true"]')) {
-      return;
-    }
-    if (listeners.onPointerDown) {
-      listeners.onPointerDown(e);
-    }
-  };
-
   return (
-    <div 
-      ref={setNodeRef} 
-      style={style} 
-      {...attributes} 
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
       className="relative cursor-grab active:cursor-grabbing"
-      onPointerDown={handlePointerDown}
-      onPointerMove={listeners.onPointerMove}
-      onPointerUp={listeners.onPointerUp}
     >
-      <WidgetWrapper 
-        widget={widget} 
-        onEdit={onEdit} 
+      <WidgetWrapper
+        widget={widget}
+        onEdit={onEdit}
         onDelete={onDelete}
         onRefresh={onRefresh}
       />
@@ -105,8 +92,8 @@ export const WidgetGrid: React.FC<WidgetGridProps> = ({
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      const oldIndex = widgets.findIndex((w) => w.id === active.id);
-      const newIndex = widgets.findIndex((w) => w.id === over.id);
+      const oldIndex = widgets.findIndex(w => w.id === active.id);
+      const newIndex = widgets.findIndex(w => w.id === over.id);
       onReorder(oldIndex, newIndex);
     }
   };
@@ -118,11 +105,11 @@ export const WidgetGrid: React.FC<WidgetGridProps> = ({
       onDragEnd={handleDragEnd}
     >
       <SortableContext
-        items={widgets.map((w) => w.id)}
+        items={widgets.map(w => w.id)}
         strategy={horizontalListSortingStrategy}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {widgets.map((widget) => (
+          {widgets.map(widget => (
             <SortableWidget
               key={widget.id}
               widget={widget}
